@@ -217,6 +217,7 @@ release-cli: clean-debug image
 	docker cp tmp-argocd-linux:/usr/local/bin/argocd ${DIST_DIR}/argocd-linux-amd64
 	docker cp tmp-argocd-linux:/usr/local/bin/argocd-darwin-amd64 ${DIST_DIR}/argocd-darwin-amd64
 	docker cp tmp-argocd-linux:/usr/local/bin/argocd-windows-amd64.exe ${DIST_DIR}/argocd-windows-amd64.exe
+	docker cp tmp-argocd-linux:/usr/local/bin/argocd-linux-ppc64le ${DIST_DIR}/argocd-linux-ppc64le
 	docker rm tmp-argocd-linux
 
 .PHONY: argocd-util
@@ -277,6 +278,7 @@ image: packr
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 dist/packr build -v -i -ldflags '${LDFLAGS}' -o ${DIST_DIR}/argocd ./cmd
 	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 dist/packr build -v -i -ldflags '${LDFLAGS}' -o ${DIST_DIR}/argocd-darwin-amd64 ./cmd
 	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 dist/packr build -v -i -ldflags '${LDFLAGS}' -o ${DIST_DIR}/argocd-windows-amd64.exe ./cmd
+	CGO_ENABLED=0 GOOS=linux GOARCH=ppc64le dist/packr build -v -i -ldflags '${LDFLAGS}' -o ${DIST_DIR}/argocd-linux-ppc64le ./cmd
 	ln -sfn ${DIST_DIR}/argocd ${DIST_DIR}/argocd-server
 	ln -sfn ${DIST_DIR}/argocd ${DIST_DIR}/argocd-application-controller
 	ln -sfn ${DIST_DIR}/argocd ${DIST_DIR}/argocd-repo-server
@@ -284,6 +286,7 @@ image: packr
 	ln -sfn ${DIST_DIR}/argocd ${DIST_DIR}/argocd-util
 	ln -sfn ${DIST_DIR}/argocd-darwin-amd64 ${DIST_DIR}/argocd-util-darwin-amd64
 	ln -sfn ${DIST_DIR}/argocd-windows-amd64.exe ${DIST_DIR}/argocd-util-windows-amd64.exe
+	ln -sfn ${DIST_DIR}/argocd-linux-ppc64le ${DIST_DIR}/argocd-util-linux-ppc64le
 	cp Dockerfile.dev dist
 	docker build -t $(IMAGE_PREFIX)argocd:$(IMAGE_TAG) -f dist/Dockerfile.dev dist
 else
@@ -297,6 +300,9 @@ endif
 # which would take a really long time.
 armimage:
 	docker build -t $(IMAGE_PREFIX)argocd:$(IMAGE_TAG)-arm . --build-arg BUILD_ALL_CLIS="false"
+
+ppcimage:
+	docker build -t $(IMAGE_PREFIX)argocd:$(IMAGE_TAG)-ppc64le . --build-arg BUILD_ALL_CLIS="false"
 
 .PHONY: builder-image
 builder-image:

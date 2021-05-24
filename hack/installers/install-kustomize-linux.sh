@@ -21,14 +21,14 @@ case $ARCHITECTURE in
     case $KUSTOMIZE_VERSION in
       2.*)
         DL=$DOWNLOADS/kustomize-${KUSTOMIZE_VERSION}
-        URL=https://github.com/kubernetes-sigs/kustomize/releases/download/v${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_$ARCHITECTURE
+        URL=https://github.com/ezeeyahoo/kustomize/releases/download/v${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_$ARCHITECTURE
         BINNAME=kustomize2
         [ -e $DL ] || curl -sLf --retry 3 -o $DL $URL
         mv $DL $BIN/$BINNAME
         ;;
       *)
         DL=$DOWNLOADS/kustomize-${KUSTOMIZE_VERSION}.tar.gz
-        URL=https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_linux_$ARCHITECTURE.tar.gz
+        URL=https://github.com/ezeeyahoo/kustomize/releases/download/kustomize/v${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_linux_$ARCHITECTURE.tar.gz
         BINNAME=kustomize
 
         [ -e $DL ] || curl -sLf --retry 3 -o $DL $URL
